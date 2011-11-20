@@ -10,7 +10,7 @@ include paths
 
 CC=g++
 CFLAGS=-Wall -c $(DEBUGOROPT)
-LFLAGS=-Wall $(DEBUGOROPT)
+LFLAGS=-Wall -lboost_filesystem-mt $(DEBUGOROPT)
 
 PROJECT=$(BIN)cpphoto
 OBJECTS:=$(patsubst $(SRC)%.cpp,%.o,$(wildcard $(SRC)*.cpp))

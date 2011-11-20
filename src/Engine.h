@@ -8,18 +8,26 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 #include <vector>
-#include <string>
+#include <boost/filesystem/path.hpp>
+
+namespace fs = boost::filesystem;
 
 namespace cpphoto {
 
 class Engine {
+private:
+	fs::path destinationDIR;
+
 public:
 	Engine();
 	~Engine();
 
-	void loadConfigurationFile(std::string & confFile);
-	void copy(std::vector<std::string> & fileList);
+	void loadConfigurationFile(fs::path & confFile);
+	void copy(std::vector<fs::path> & fileList);
 	void abort();
+
+    fs::path getDestinationDir() const;
+    void setDestinationDir(fs::path destinationDIR);
 };
 
 } /* namespace cpphoto */

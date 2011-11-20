@@ -17,32 +17,22 @@ AbstractInterface::AbstractInterface(Engine & engine) :
 
 }
 
-void AbstractInterface::start(doneFunction_t done) throw(EUnloadedListOfFiles)
+void AbstractInterface::start(doneFunction_t done) throw(UnloadedListOfFiles)
 {
-	if (this->isListLoaded())
+	if (this->listLoaded)
 	{
 		this->engine.copy(this->fileList);
 		done();
 	}
 	else
 	{
-		throw EUnloadedListOfFiles();
+		throw UnloadedListOfFiles();
 	}
 }
 
 void AbstractInterface::abort()
 {
 	this->engine.abort();
-}
-
-bool AbstractInterface::isListLoaded() const
-{
-	return listLoaded;
-}
-
-void AbstractInterface::setListLoaded(bool listLoaded)
-{
-	this->listLoaded = listLoaded;
 }
 
 } /* namespace cpphoto */

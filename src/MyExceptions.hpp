@@ -8,14 +8,32 @@
 #ifndef MYEXCEPTIONS_HPP_
 #define MYEXCEPTIONS_HPP_
 #include <exception>
+#include <string>
 
 namespace cpphoto {
 
-class EUnloadedListOfFiles: public std::exception
+class UnloadedListOfFiles: public std::exception
 {
+public:
 	virtual const char* what() const throw()
 	{
 		return "List of files wasn't loaded!";
+	}
+};
+
+class IOWhileLoadListOfFiles: public std::exception
+{
+public:
+	std::string errorMsg;
+	virtual const char* what() const throw()
+	{
+		std::string msg = "Input/output error while loading list of files!";
+		if (!errorMsg.empty())
+			msg += "\n" + errorMsg;
+		return msg.c_str();
+	}
+	~IOWhileLoadListOfFiles() throw()
+	{
 	}
 };
 

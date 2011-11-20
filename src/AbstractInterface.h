@@ -7,17 +7,21 @@
 
 #ifndef ABSTRACTINTERFACE_H_
 #define ABSTRACTINTERFACE_H_
+
 #include <vector>
-#include <string>
+#include <boost/filesystem/path.hpp>
+
 #include "Engine.h"
 #include "MyExceptions.hpp"
+
+namespace fs = boost::filesystem;
 
 namespace cpphoto {
 
 class AbstractInterface {
-private:
+protected:
 	Engine & engine;
-	std::vector<std::string> fileList;
+	std::vector<fs::path> fileList;
 	bool listLoaded;
 
 public:
@@ -27,12 +31,9 @@ public:
 	AbstractInterface(Engine & engine);
 	virtual ~AbstractInterface() {};
 
-	virtual void getListOfFiles() = 0;
-	void start(doneFunction_t done) throw(EUnloadedListOfFiles);
+	virtual void getListOfFiles() throw(IOWhileLoadListOfFiles) = 0;
+	void start(doneFunction_t done) throw(UnloadedListOfFiles);
 	void abort();
-
-	bool isListLoaded() const;
-    void setListLoaded(bool listLoaded);
 };
 
 } /* namespace cpphoto */

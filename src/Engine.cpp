@@ -10,22 +10,29 @@
 namespace cpphoto {
 
 Engine::Engine() {
-	// TODO Auto-generated constructor stub
-
 }
 
-Engine::~Engine() {
-	// TODO Auto-generated destructor stub
-}
-
-void Engine::loadConfigurationFile(std::string & confFile)
+Engine::~Engine()
 {
-
 }
 
-void Engine::copy(std::vector<std::string> & fileList)
+void Engine::loadConfigurationFile(fs::path & confFile)
 {
+}
 
+void Engine::copy(std::vector<fs::path> & fileList)
+{
+}
+
+
+fs::path Engine::getDestinationDir() const
+{
+	return destinationDIR;
+}
+
+void Engine::setDestinationDir(fs::path destinationDIR)
+{
+	this->destinationDIR = destinationDIR;
 }
 
 void Engine::abort()
