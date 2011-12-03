@@ -8,12 +8,14 @@
 #ifndef EXIFMANAGER_H_
 #define EXIFMANAGER_H_
 
-namespace cpphoto {
+namespace cpphoto
+{
 
-class ExifManager {
+class ExifManager
+{
 public:
-	ExifManager();
-	~ExifManager();
+    ExifManager();
+    ~ExifManager();
 };
 
 } /* namespace cpphoto */

@@ -10,31 +10,32 @@
 #include <exception>
 #include <string>
 
-namespace cpphoto {
+namespace cpphoto
+{
 
 class UnloadedListOfFiles: public std::exception
 {
 public:
-	virtual const char* what() const throw()
-	{
-		return "List of files wasn't loaded!";
-	}
+    virtual const char* what() const throw ()
+    {
+        return "List of files wasn't loaded!";
+    }
 };
 
 class IOWhileLoadListOfFiles: public std::exception
 {
 public:
-	std::string errorMsg;
-	virtual const char* what() const throw()
-	{
-		std::string msg = "Input/output error while loading list of files!";
-		if (!errorMsg.empty())
-			msg += "\n" + errorMsg;
-		return msg.c_str();
-	}
-	~IOWhileLoadListOfFiles() throw()
-	{
-	}
+    std::string errorMsg;
+    virtual const char* what() const throw ()
+    {
+        std::string msg = "Input/output error while loading list of files!";
+        if (!errorMsg.empty())
+            msg += "\n" + errorMsg;
+        return msg.c_str();
+    }
+    ~IOWhileLoadListOfFiles() throw ()
+    {
+    }
 };
 
 }

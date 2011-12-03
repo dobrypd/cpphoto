@@ -8,18 +8,17 @@
 ##/****************************************/
 include paths
 
+DEBUGOROPT = -O2 -DNDEBUG
+ifeq ($(debuglevel), 1)
+	DEBUGOROPT = -g
+endif
+
 CC=g++
 CFLAGS=-Wall -c $(DEBUGOROPT)
 LFLAGS=-Wall -lboost_filesystem-mt $(DEBUGOROPT)
 
 PROJECT=$(BIN)cpphoto
 OBJECTS:=$(patsubst $(SRC)%.cpp,%.o,$(wildcard $(SRC)*.cpp))
-
-DEBUGOROPT = -O2 -DNDEBUG
-ifeq ($(debuglevel), 1)
-	DEBUGOROPT = -g
-endif
-
 
 all: $(PROJECT)
 

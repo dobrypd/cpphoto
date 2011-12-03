@@ -12,39 +12,41 @@
 
 #include "AbstractInterface.h"
 
-namespace fs = boost::filesystem;
+namespace cpphoto
+{
 
-namespace cpphoto {
-
-class ConsoleInterface : public AbstractInterface {
+class ConsoleInterface: public AbstractInterface
+{
 private:
-	fs::path sourceDIR;
-	fs::path destinationDIR;
+    fs::path sourceDIR;
+    fs::path destinationDIR;
 
 public:
-	typedef struct {
-			bool recursive;
-			bool onlyCopy;
-			bool force;
-			const char * fromDir;
-			const char * toDir;
-	} configuration_t;
+    typedef struct
+    {
+        bool recursive;
+        bool force;
+        Engine::ModifiedMethod modifiedMethod;
+        const char * fromDir;
+        const char * toDir;
+    } configuration_t;
 
-	explicit
-	ConsoleInterface(Engine & engine);
-	ConsoleInterface(Engine & engine, configuration_t & config);
-	virtual ~ConsoleInterface();
+    explicit
+    ConsoleInterface(Engine & engine);
+    ConsoleInterface(Engine & engine, configuration_t & config);
+    virtual ~ConsoleInterface();
 
-	configuration_t config;
+    configuration_t config;
 
-	/**
-	 * if directoryFromArgs execution was omitted
-	 * then list of files will be created from
-	 * directory where program was ran
-	 */
-	virtual void getListOfFiles() throw(IOWhileLoadListOfFiles);
-	void directoryFromArgs(const char * fromDIR) throw(IOWhileLoadListOfFiles);
-	void directoryFromArgs(const char * fromDIR, const char * toDIR) throw(IOWhileLoadListOfFiles);
+    /**
+     * if directoryFromArgs execution was omitted
+     * then list of files will be created from
+     * directory where program was ran
+     */
+    virtual void getListOfFiles() throw (IOWhileLoadListOfFiles);
+    void directoryFromArgs(const char * fromDIR) throw (IOWhileLoadListOfFiles);
+    void directoryFromArgs(const char * fromDIR, const char * toDIR)
+            throw (IOWhileLoadListOfFiles);
 
 };
 

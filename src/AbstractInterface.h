@@ -16,24 +16,29 @@
 
 namespace fs = boost::filesystem;
 
-namespace cpphoto {
+namespace cpphoto
+{
 
-class AbstractInterface {
+class AbstractInterface
+{
 protected:
-	Engine & engine;
-	std::vector<fs::path> fileList;
-	bool listLoaded;
+    Engine & engine;
+    std::vector<fs::path> fileList;
+    bool listLoaded;
 
 public:
-	typedef void (*doneFunction_t)(void);
+    typedef void (*doneFunction_t)(void);
 
-	explicit
-	AbstractInterface(Engine & engine);
-	virtual ~AbstractInterface() {};
+    explicit
+    AbstractInterface(Engine & engine);
+    virtual ~AbstractInterface() { };
 
-	virtual void getListOfFiles() throw(IOWhileLoadListOfFiles) = 0;
-	void start(doneFunction_t done) throw(UnloadedListOfFiles);
-	void abort();
+    virtual void getListOfFiles() throw (IOWhileLoadListOfFiles) = 0;
+    void start(doneFunction_t done) throw (UnloadedListOfFiles);
+    void abort();
+    /**
+     * TODO: abstract progress manager: callback function
+     */
 };
 
 } /* namespace cpphoto */

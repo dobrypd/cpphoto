@@ -7,15 +7,18 @@
 
 #include "ExifManager.h"
 
-namespace cpphoto {
+namespace cpphoto
+{
 
-ExifManager::ExifManager() {
-	// TODO Auto-generated constructor stub
+ExifManager::ExifManager()
+{
+    // TODO Auto-generated constructor stub
 
 }
 
-ExifManager::~ExifManager() {
-	// TODO Auto-generated destructor stub
+ExifManager::~ExifManager()
+{
+    // TODO Auto-generated destructor stub
 }
 
 } /* namespace cpphoto */

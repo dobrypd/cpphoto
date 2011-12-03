@@ -12,19 +12,29 @@
 
 namespace fs = boost::filesystem;
 
-namespace cpphoto {
+namespace cpphoto
+{
 
-class Engine {
+class Engine
+{
 private:
-	fs::path destinationDIR;
+    fs::path destinationDIR;
 
 public:
-	Engine();
-	~Engine();
+    /**
+     * what to do with files that known as unmodified
+     */
+    typedef enum
+    {
+        Override, ByDate, ByAttibutes
+    } ModifiedMethod;
 
-	void loadConfigurationFile(fs::path & confFile);
-	void copy(std::vector<fs::path> & fileList);
-	void abort();
+    Engine();
+    ~Engine();
+
+    void loadConfigurationFile(fs::path & confFile);
+    void copy(std::vector<fs::path> & fileList);
+    void abort();
 
     fs::path getDestinationDir() const;
     void setDestinationDir(fs::path destinationDIR);

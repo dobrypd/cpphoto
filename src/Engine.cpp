@@ -7,9 +7,11 @@
 
 #include "Engine.h"
 
-namespace cpphoto {
+namespace cpphoto
+{
 
-Engine::Engine() {
+Engine::Engine()
+{
 }
 
 Engine::~Engine()
@@ -18,21 +20,23 @@ Engine::~Engine()
 
 void Engine::loadConfigurationFile(fs::path & confFile)
 {
+    /**
+     * load config from file. If File does not exist then create one in user home directory
+     */
 }
 
 void Engine::copy(std::vector<fs::path> & fileList)
 {
 }
 
-
 fs::path Engine::getDestinationDir() const
 {
-	return destinationDIR;
+    return destinationDIR;
 }
 
 void Engine::setDestinationDir(fs::path destinationDIR)
 {
-	this->destinationDIR = destinationDIR;
+    this->destinationDIR = destinationDIR;
 }
 
 void Engine::abort()
