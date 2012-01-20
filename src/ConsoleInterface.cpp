@@ -32,35 +32,25 @@ ConsoleInterface::~ConsoleInterface()
 
 void ConsoleInterface::getListOfFiles() throw (IOWhileLoadListOfFiles)
 {
-    this->directoryFromArgs(0, 0);
-}
-
-void ConsoleInterface::directoryFromArgs(const char * fromDIR)
-        throw (IOWhileLoadListOfFiles)
-{
-    directoryFromArgs(fromDIR, 0);
-}
-
-void ConsoleInterface::directoryFromArgs(const char * fromDIR,
-        const char * toDIR) throw (IOWhileLoadListOfFiles)
-{
     this->sourceDIR =
-            (fromDIR == 0) ?
-                    (fs::current_path()) : (fs::path(fromDIR, fs::native));
+            (config.fromDir == 0) ?
+                    (fs::current_path()) : (fs::path(config.fromDir));
     this->destinationDIR =
-            (toDIR == 0) ?
+            (config.toDir == 0) ?
                     (this->engine.getDestinationDir()) :
-                    (fs::path(toDIR, fs::native));
+                    (fs::path(config.toDir));
     if ((!(fs::exists(this->sourceDIR)))
             || (!(fs::exists(this->destinationDIR))))
     {
         IOWhileLoadListOfFiles e;
         e.errorMsg = "Check your directories (from or target). "
-                "There are an error because some of them doesn't exists";
+                "There are an error because some of them does not exists";
         throw e;
     }
 
     fileList.push_back(this->sourceDIR);
+
+    this->listLoaded = true;
 }
 
 } /* namespace cpphoto */

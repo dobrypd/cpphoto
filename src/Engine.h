@@ -22,12 +22,12 @@ private:
 
 public:
     /**
-     * what to do with files that known as unmodified
+     * method of checking if files were modified
      */
-    typedef enum
+    enum ModifiedMethod
     {
-        Override, ByDate, ByAttibutes
-    } ModifiedMethod;
+        Override, CheckHash, Database
+    };
 
     Engine();
     ~Engine();
@@ -35,6 +35,7 @@ public:
     void loadConfigurationFile(fs::path & confFile);
     void copy(std::vector<fs::path> & fileList);
     void abort();
+    double status();
 
     fs::path getDestinationDir() const;
     void setDestinationDir(fs::path destinationDIR);

@@ -25,14 +25,13 @@ public:
     typedef struct
     {
         bool recursive;
-        bool force;
+        bool changeEXIF;
         Engine::ModifiedMethod modifiedMethod;
         const char * fromDir;
         const char * toDir;
     } configuration_t;
 
-    explicit
-    ConsoleInterface(Engine & engine);
+    explicit ConsoleInterface(Engine & engine);
     ConsoleInterface(Engine & engine, configuration_t & config);
     virtual ~ConsoleInterface();
 
@@ -44,9 +43,6 @@ public:
      * directory where program was ran
      */
     virtual void getListOfFiles() throw (IOWhileLoadListOfFiles);
-    void directoryFromArgs(const char * fromDIR) throw (IOWhileLoadListOfFiles);
-    void directoryFromArgs(const char * fromDIR, const char * toDIR)
-            throw (IOWhileLoadListOfFiles);
 
 };
 

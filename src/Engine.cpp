@@ -44,4 +44,12 @@ void Engine::abort()
 
 }
 
+/**
+ * returns double in [0,1]
+ */
+double Engine::status()
+{
+    return 0.0;
+}
+
 } /* namespace cpphoto */

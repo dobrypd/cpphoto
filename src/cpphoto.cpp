@@ -26,18 +26,18 @@ void showHelpMsg(const char * prName)
             << std::endl
             << "options:"
             << std::endl
-            << "-h\t\t-show this help message,"
+            << "-h\t-show this help message,"
             << std::endl
-            << "-r\t\t-recursive,"
+            << "-r\t-recursive,"
             << std::endl
-            << "-m\t\t-copy without changing EXIF,"
+            << "-m\t-copy without changing EXIF,"
             << std::endl
-            << "-f\t\t-force, if file exists, override it,"
+            << "-f\t-force, if file exists, override it,"
             << std::endl
-            << "-d\t\t-destination, if not specified destination from configuration file."
+            << "-d\t-destination, if not specified destination from configuration file."
             << std::endl
             << std::endl
-            << "[SOURCE]\t\tif empty, copy from current directory."
+            << "[SOURCE]\tif empty, copy from current directory."
             << std::endl << std::endl;
 }
 
@@ -55,8 +55,8 @@ bool parseArguments(int argc, char ** argv,
         ConsoleInterface::configuration_t & config)
 {
     config.recursive = false;
-    config.force = false;
-    config.modifiedMethod = (Engine::ModifiedMethod) 0;
+    config.changeEXIF = true;
+    config.modifiedMethod = Engine::CheckHash;
     config.fromDir = 0;
     config.toDir = 0;
 
@@ -68,36 +68,42 @@ bool parseArguments(int argc, char ** argv,
         switch (c)
         {
         case 'h':   // help
-            std::cout << "Help" << std::endl;
             return false;
         case 'r':   // recursive
-            std::cout << "Recursive" << std::endl;
             config.recursive = true;
             break;
         case 'f':   // force
-            std::cout << "Force" << std::endl;
+            config.modifiedMethod = Engine::Override;
             break;
-        case 'm':   // method
-            std::cout << "Method" << std::endl;
+        case 'm':   // do not change exif
+            config.changeEXIF = false;
             break;
         case 'd':   // destination
-            std::cout << "Destination" << std::endl;
+            config.toDir = optarg;
             break;
         case '?':   // destination / unexpected
-            if (optopt == 'c')
-                std::cerr << "Option -%c requires an argument." << optopt << std::endl;
+            if (optopt == 'd')
+                std::cerr << "Option '-" << static_cast<char>(optopt) << "' requires an argument." << std::endl;
             else if (isprint (optopt))
-                std::cerr << "Unknown option `-%c'." << optopt << std::endl;
+                std::cerr << "Unknown option `-" << static_cast<char>(optopt) << "'." << std::endl;
             else
-                std::cerr << "Unknown option character `\\x%x'." <<optopt << std::endl;
+                std::cerr << "Unknown option character `" << std::hex << optopt << "'." << std::endl;
             return false;
         default:
-            abort ();
+            abort();
             break;
         }
 
     for (index = optind; index < argc; index++) //source / non-option
-        std::cout << "Non-option argument " << argv[index] << std::endl;
+    {
+        if (config.fromDir == 0)
+            config.fromDir = argv[index];
+        else
+        {
+            std::cout << "Too many arguments :" << argv[index] << std::endl;
+            return false;
+        }
+    }
 
     return true;
 }
