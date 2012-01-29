@@ -31,7 +31,10 @@ public:
 
     explicit
     AbstractInterface(Engine & engine);
-    virtual ~AbstractInterface() { };
+    virtual ~AbstractInterface()
+    {
+    }
+    ;
 
     virtual void getListOfFiles() throw (IOWhileLoadListOfFiles) = 0;
     void start(doneFunction_t done) throw (UnloadedListOfFiles);

@@ -36,10 +36,9 @@ void showHelpMsg(const char * prName)
             << "-f\t-force, if file exists, override it,"
             << std::endl
             << "-d\t-destination, if not specified destination from configuration file."
-            << std::endl
-            << std::endl
-            << "[SOURCE]\tif empty, copy from current directory."
-            << std::endl << std::endl;
+            << std::endl << std::endl
+            << "[SOURCE]\tif empty, copy from current directory." << std::endl
+            << std::endl;
 }
 
 void done()
@@ -79,11 +78,14 @@ bool parseArguments(int argc, char ** argv,
             break;
         case '?':   // destination / unexpected
             if (optopt == 'd')
-                std::cerr << "Option '-" << static_cast<char>(optopt) << "' requires an argument." << std::endl;
-            else if (isprint (optopt))
-                std::cerr << "Unknown option `-" << static_cast<char>(optopt) << "'." << std::endl;
+                std::cerr << "Option '-" << static_cast<char>(optopt)
+                        << "' requires an argument." << std::endl;
+            else if (isprint(optopt))
+                std::cerr << "Unknown option `-" << static_cast<char>(optopt)
+                        << "'." << std::endl;
             else
-                std::cerr << "Unknown option character `" << std::hex << optopt << "'." << std::endl;
+                std::cerr << "Unknown option character `" << std::hex << optopt
+                        << "'." << std::endl;
             return false;
         default:
             abort();
@@ -115,15 +117,17 @@ int main(int argc, char **argv)
 
     Engine engine;
     ConsoleInterface interface(engine, config);
-    ProgressMonitor progress(engine.status, std::cout, 1);
+    ProgressMonitor::progressFunciton_t statusFunction; //TODO: there is the place where i want to push pointer to method forward
+    ProgressMonitor progress(statusFunction, std::cout, 1);
 
     try
     {
         interface.getListOfFiles();
+
         interface.start(done);
         progress.start();
+
         interface.join();
-        progress.stop();
         progress.join();
     }
     catch (UnloadedListOfFiles & e)

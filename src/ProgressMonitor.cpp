@@ -10,7 +10,8 @@
 namespace cpphoto
 {
 
-ProgressMonitor::ProgressMonitor(progressFuncciton_t function, std::ostream output, int interval = 0) :
+ProgressMonitor::ProgressMonitor(progressFuncciton_t function,
+        std::ostream output, int interval = 0) :
         function(function), output(output), interval(interval), stop(false)
 {
 
@@ -18,7 +19,7 @@ ProgressMonitor::ProgressMonitor(progressFuncciton_t function, std::ostream outp
 
 void ProgressMonitor::show()
 {
-    while(!this->stop)
+    while (!this->stop)
     {
         this->output << (this->function() * 100) << "%\r";
         if (this->interval != 0)

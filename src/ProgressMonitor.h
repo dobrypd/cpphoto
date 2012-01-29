@@ -18,9 +18,10 @@ class ProgressMonitor
 public:
     typedef double (*progressFunciton_t)(void);
 
-    ProgressMonitor(progressFunciton_t function, std::ostream output, int interval);
+    ProgressMonitor(progressFunciton_t function, std::ostream output,
+            int interval);
 
-    void show();
+    void show() const;
     void start();
     void join();
 
