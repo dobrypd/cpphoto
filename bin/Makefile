@@ -13,6 +13,8 @@ ifeq ($(debuglevel), 1)
 	DEBUGOROPT = -g
 endif
 
+BOOSTOPT=-lboost_filesystem-mt -lboost_thread-mt
+
 CC=g++
 CFLAGS=-Wall -c $(DEBUGOROPT)
 LFLAGS=-Wall -lboost_filesystem-mt $(DEBUGOROPT)

@@ -14,6 +14,7 @@
 #include "ExifManager.h"
 #include "AbstractInterface.h"
 #include "ConsoleInterface.h"
+#include "ProgressMonitor.h"
 
 using namespace cpphoto;
 
@@ -43,12 +44,7 @@ void showHelpMsg(const char * prName)
 
 void done()
 {
-    std::cout << "Huurrrray! Copied!" << std::endl;
-}
-
-void printErrorMsg(const char * msg)
-{
-    std::cerr << msg << std::endl;
+    std::cout << "Huurrrray! Copied!" << std::endl; //TODO: change it to more readable
 }
 
 bool parseArguments(int argc, char ** argv,
@@ -118,29 +114,26 @@ int main(int argc, char **argv)
     }
 
     Engine engine;
-    AbstractInterface * interface = new ConsoleInterface(engine, config);
+    ConsoleInterface interface(engine, config);
+    ProgressMonitor progress(engine.status, std::cout, 1);
 
     try
     {
-        interface->getListOfFiles();
-        //nowy watek i jezeli zabicie to abort najpierw
-        //TODO: PROGRESS!!!!!!!!!!
-        //lista plikow minus te co sa
-        //te co sa mozna na 2 sposoby wydobywac
-        //1- zapisywac w konfiguracji (np w tmp i aktualizowac jezeli potrzeba) po czasie!
-        //2- szukac za kazdym razem
-        interface->start(done);
+        interface.getListOfFiles();
+        interface.start(done);
+        progress.start();
+        interface.join();
+        progress.stop();
+        progress.join();
     }
     catch (UnloadedListOfFiles & e)
     {
-        printErrorMsg(e.what());
+        std::cerr << e.what() << std::endl;
     }
     catch (IOWhileLoadListOfFiles & e)
     {
-        printErrorMsg(e.what());
+        std::cerr << e.what() << std::endl;
     }
-
-    delete interface;
 
     return 0;
 }

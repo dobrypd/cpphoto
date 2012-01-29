@@ -18,6 +18,16 @@ Engine::~Engine()
 {
 }
 
+void Engine::start(std::vector<fs::path> & fileList)
+{
+    processThread = boost::thread(&Engine::copy, this, fileList);
+}
+
+void Engine::join()
+{
+    processThread.join();
+}
+
 void Engine::loadConfigurationFile(fs::path & confFile)
 {
     /**

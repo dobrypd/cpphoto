@@ -35,10 +35,8 @@ public:
 
     virtual void getListOfFiles() throw (IOWhileLoadListOfFiles) = 0;
     void start(doneFunction_t done) throw (UnloadedListOfFiles);
+    void join();
     void abort();
-    /**
-     * TODO: abstract progress manager: callback function
-     */
 };
 
 } /* namespace cpphoto */

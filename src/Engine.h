@@ -7,18 +7,23 @@
 
 #ifndef ENGINE_H_
 #define ENGINE_H_
+
 #include <vector>
 #include <boost/filesystem/path.hpp>
+#include <boost/thread.hpp>
 
-namespace fs = boost::filesystem;
+#include "ProgressMonitor.h"
 
 namespace cpphoto
 {
+
+namespace fs = boost::filesystem;
 
 class Engine
 {
 private:
     fs::path destinationDIR;
+    boost::thread processThread;
 
 public:
     /**
@@ -31,6 +36,9 @@ public:
 
     Engine();
     ~Engine();
+
+    void start(std::vector<fs::path> & fileList);
+    void join();
 
     void loadConfigurationFile(fs::path & confFile);
     void copy(std::vector<fs::path> & fileList);
