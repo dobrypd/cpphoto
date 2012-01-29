@@ -17,7 +17,7 @@ BOOSTOPT=-lboost_filesystem-mt -lboost_thread-mt
 
 CC=g++
 CFLAGS=-Wall -c $(DEBUGOROPT)
-LFLAGS=-Wall -lboost_filesystem-mt $(DEBUGOROPT)
+LFLAGS=-Wall $(BOOSTOPT) $(DEBUGOROPT)
 
 PROJECT=$(BIN)cpphoto
 OBJECTS:=$(patsubst $(SRC)%.cpp,%.o,$(wildcard $(SRC)*.cpp))
