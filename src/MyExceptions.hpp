@@ -38,6 +38,32 @@ public:
     }
 };
 
+class IOWhileCopying: public std::exception
+{
+public:
+    std::string errorMsg;
+    virtual const char* what() const throw ()
+    {
+        std::string msg = "Input/output error while copying files.";
+        if (!errorMsg.empty())
+            msg += "\n" + errorMsg;
+        return msg.c_str();
+    }
+    ~IOWhileCopying() throw ()
+    {
+    }
+};
+
+
+class ConfigFileLoadingError: public std::exception
+{
+public:
+    virtual const char* what() const throw ()
+    {
+        return "Cannot load configuration file!";
+    }
+};
+
 }
 
 #endif /* MYEXCEPTIONS_HPP_ */

@@ -15,10 +15,10 @@
 #include "Engine.h"
 #include "MyExceptions.hpp"
 
-namespace fs = boost::filesystem;
-
 namespace cpphoto
 {
+
+namespace fs = boost::filesystem;
 
 class AbstractInterface
 {
@@ -37,6 +37,7 @@ public:
     ;
 
     virtual void getListOfFiles() throw (IOWhileLoadListOfFiles) = 0;
+    void appendFiles(fs::path path, bool recursive);
     void start() throw (UnloadedListOfFiles);
     void join();
     void abort();

@@ -5,6 +5,9 @@
  *      Author: piotrek
  */
 
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+
 #include "AbstractInterface.h"
 #include "MyExceptions.hpp"
 
@@ -15,6 +18,26 @@ AbstractInterface::AbstractInterface(Engine & engine) :
         engine(engine), listLoaded(false)
 {
 
+}
+
+void AbstractInterface::appendFiles(fs::path path, bool recursive)
+{
+    if (fs::exists(path))
+    {
+        if (recursive && fs::is_directory(path))
+        {
+            fs::directory_iterator endIter;
+            for (fs::directory_iterator iter (path); iter != endIter; ++iter)
+            {
+                appendFiles(*iter, recursive);
+            }
+
+        }
+        else if (fs::is_regular_file(path))
+        {
+            this->fileList.push_back(path);
+        }
+    }
 }
 
 void AbstractInterface::start() throw (UnloadedListOfFiles)

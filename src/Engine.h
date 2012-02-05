@@ -13,6 +13,8 @@
 #include <boost/thread.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "MyExceptions.hpp"
+
 namespace cpphoto
 {
 
@@ -40,7 +42,7 @@ public:
     void start(std::vector<fs::path> & fileList);
     void join();
 
-    void loadConfigurationFile(fs::path & confFile);
+    void loadConfigurationFile(fs::path confFile) throw (ConfigFileLoadingError);
     void abort();
     double status() const;
 

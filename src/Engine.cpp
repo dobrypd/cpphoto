@@ -6,6 +6,7 @@
  */
 
 #include "Engine.h"
+#include <boost/filesystem/operations.hpp>
 
 namespace cpphoto
 {
@@ -28,15 +29,26 @@ void Engine::join()
     processThread.join();
 }
 
-void Engine::loadConfigurationFile(fs::path & confFile)
+void Engine::loadConfigurationFile(fs::path confFile) throw (ConfigFileLoadingError)
 {
-    /**
-     * load config from file. If File does not exist then create one in user home directory
-     */
+    if (!fs::exists(confFile))
+    {
+        throw ConfigFileLoadingError();
+    }
+
 }
 
 void Engine::copy(std::vector<fs::path> & fileList)
 {
+    //TODO: testing outputs
+    std::stringstream ss;
+    std::string str;
+    for (std::vector<fs::path>::iterator it = fileList.begin(); it != fileList.end(); it++)
+    {
+        ss << ">" << *it << std::endl;
+        ss >> str;
+        std::cout << str << std::endl;
+    }
 }
 
 fs::path Engine::getDestinationDir() const

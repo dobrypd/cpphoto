@@ -40,7 +40,8 @@ void ConsoleInterface::getListOfFiles() throw (IOWhileLoadListOfFiles)
                     (this->engine.getDestinationDir()) :
                     (fs::path(config.toDir));
     if ((!(fs::exists(this->sourceDIR)))
-            || (!(fs::exists(this->destinationDIR))))
+            || (!(fs::exists(this->destinationDIR)))
+            || (!(fs::is_directory(this->destinationDIR))))
     {
         IOWhileLoadListOfFiles e;
         e.errorMsg = "Check your directories (from or target). "
@@ -48,7 +49,7 @@ void ConsoleInterface::getListOfFiles() throw (IOWhileLoadListOfFiles)
         throw e;
     }
 
-    fileList.push_back(this->sourceDIR);
+    this->appendFiles(this->sourceDIR, this->config.recursive);
 
     this->listLoaded = true;
 }

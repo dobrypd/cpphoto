@@ -8,7 +8,6 @@
 #include <iostream>
 #include <exception>
 #include <unistd.h>
-#include <boost/bind.hpp>
 
 #include "MyExceptions.hpp"
 #include "Engine.h"
@@ -40,11 +39,6 @@ void showHelpMsg(const char * prName)
             << std::endl << std::endl
             << "[SOURCE]\tif empty, copy from current directory." << std::endl
             << std::endl;
-}
-
-void done()
-{
-    std::cout << "Huurrrray! Copied!" << std::endl; //TODO: change it to more readable
 }
 
 bool parseArguments(int argc, char ** argv,
@@ -107,23 +101,59 @@ bool parseArguments(int argc, char ** argv,
     return true;
 }
 
+boost::filesystem::path getConfig()
+{
+    std::string homeStr;
+    char const * home = getenv("HOME");
+    if (!home)
+        home = getenv("USERPROFILE");
+    if (!home)
+    {
+        char const *hdrive = getenv("HOMEDRIVE"),
+                *hpath = getenv("HOMEPATH");
+        homeStr = std::string(hdrive) + hpath;
+    }
+    else
+        homeStr = home;
+
+    homeStr.append(".cpphoto");
+    return fs::path(homeStr);
+}
+
 int main(int argc, char **argv)
 {
     ConsoleInterface::configuration_t config;
     if (!parseArguments(argc, argv, config))
     {
         showHelpMsg(argv[0]);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     Engine engine;
+    try
+    {
+        engine.loadConfigurationFile(getConfig());
+    }
+    catch (ConfigFileLoadingError & e) {
+        std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
+
     ConsoleInterface interface(engine, config);
     ProgressMonitor progress(engine, std::cout, 1);
 
     try
     {
         interface.getListOfFiles();
+    }
+    catch (IOWhileLoadListOfFiles & e)
+    {
+        std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
 
+    try
+    {
         interface.start();
         progress.start();
 
@@ -133,11 +163,14 @@ int main(int argc, char **argv)
     catch (UnloadedListOfFiles & e)
     {
         std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
     }
-    catch (IOWhileLoadListOfFiles & e)
+    catch (IOWhileCopying & e)
     {
         std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
     }
 
-    return 0;
+
+    return EXIT_SUCCESS;
 }
