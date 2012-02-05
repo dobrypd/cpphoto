@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <boost/filesystem/path.hpp>
+#include <boost/thread.hpp>
 
 #include "Engine.h"
 #include "MyExceptions.hpp"
@@ -22,13 +23,12 @@ namespace cpphoto
 class AbstractInterface
 {
 protected:
+    boost::thread processThread;
     Engine & engine;
     std::vector<fs::path> fileList;
     bool listLoaded;
 
 public:
-    typedef void (*doneFunction_t)(void);
-
     explicit
     AbstractInterface(Engine & engine);
     virtual ~AbstractInterface()
@@ -37,7 +37,7 @@ public:
     ;
 
     virtual void getListOfFiles() throw (IOWhileLoadListOfFiles) = 0;
-    void start(doneFunction_t done) throw (UnloadedListOfFiles);
+    void start() throw (UnloadedListOfFiles);
     void join();
     void abort();
 };

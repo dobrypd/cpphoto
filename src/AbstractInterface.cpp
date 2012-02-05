@@ -17,12 +17,11 @@ AbstractInterface::AbstractInterface(Engine & engine) :
 
 }
 
-void AbstractInterface::start(doneFunction_t done) throw (UnloadedListOfFiles)
+void AbstractInterface::start() throw (UnloadedListOfFiles)
 {
     if (this->listLoaded)
     {
-        this->engine.copy(this->fileList);
-        done();
+        this->engine.start(this->fileList);
     }
     else
     {
@@ -33,6 +32,11 @@ void AbstractInterface::start(doneFunction_t done) throw (UnloadedListOfFiles)
 void AbstractInterface::abort()
 {
     this->engine.abort();
+}
+
+void AbstractInterface::join()
+{
+   this->engine.join();
 }
 
 } /* namespace cpphoto */

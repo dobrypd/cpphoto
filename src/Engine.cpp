@@ -51,13 +51,13 @@ void Engine::setDestinationDir(fs::path destinationDIR)
 
 void Engine::abort()
 {
-
+    this->join();
 }
 
 /**
  * returns double in [0,1]
  */
-double Engine::status()
+double Engine::status() const
 {
     return 0.0;
 }

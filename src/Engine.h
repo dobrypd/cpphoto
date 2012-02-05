@@ -11,20 +11,20 @@
 #include <vector>
 #include <boost/filesystem/path.hpp>
 #include <boost/thread.hpp>
-
-#include "ProgressMonitor.h"
+#include <boost/noncopyable.hpp>
 
 namespace cpphoto
 {
 
 namespace fs = boost::filesystem;
 
-class Engine
+class Engine: boost::noncopyable
 {
 private:
     fs::path destinationDIR;
     boost::thread processThread;
 
+    void copy(std::vector<fs::path> & fileList);
 public:
     /**
      * method of checking if files were modified
@@ -41,9 +41,8 @@ public:
     void join();
 
     void loadConfigurationFile(fs::path & confFile);
-    void copy(std::vector<fs::path> & fileList);
     void abort();
-    double status();
+    double status() const;
 
     fs::path getDestinationDir() const;
     void setDestinationDir(fs::path destinationDIR);

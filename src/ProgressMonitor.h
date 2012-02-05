@@ -10,27 +10,28 @@
 
 #include <boost/thread.hpp>
 
+#include "Engine.h"
+
 namespace cpphoto
 {
 
 class ProgressMonitor
 {
-public:
-    typedef double (*progressFunciton_t)(void);
-
-    ProgressMonitor(progressFunciton_t function, std::ostream output,
-            int interval);
-
-    void show() const;
-    void start();
-    void join();
-
 private:
     boost::thread processThread;
-    progressFunciton_t function;
-    std::ostream output;
+    const Engine & engine;
+    std::ostream & output;
     int interval;
     volatile bool stop;
+
+public:
+    explicit
+    ProgressMonitor(const Engine & engine, std::ostream & output,
+            int interval);
+
+    void show();
+    void start();
+    void join();
 };
 
 } /* namespace cpphoto */

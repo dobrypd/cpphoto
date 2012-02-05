@@ -10,21 +10,20 @@
 namespace cpphoto
 {
 
-ProgressMonitor::ProgressMonitor(progressFuncciton_t function,
-        std::ostream output, int interval = 0) :
-        function(function), output(output), interval(interval), stop(false)
+ProgressMonitor::ProgressMonitor(const Engine & engine, std::ostream & output,
+        int interval = 0) :
+        engine(engine), output(output), interval(interval), stop(true)
 {
-
 }
 
 void ProgressMonitor::show()
 {
     while (!this->stop)
     {
-        this->output << (this->function() * 100) << "%\r";
+        this->output << "\r" << (this->engine.status() * 100) << "%";
         if (this->interval != 0)
         {
-            boost::this_thread::sleep(this->interval);
+            boost::this_thread::sleep(boost::posix_time::seconds(this->interval));
         }
     }
 }
@@ -32,10 +31,12 @@ void ProgressMonitor::show()
 void ProgressMonitor::start()
 {
     processThread = boost::thread(&ProgressMonitor::show, this);
+    stop = false;
 }
 
 void ProgressMonitor::join()
 {
+    this->processThread.interrupt();
     this->stop = true;
     this->processThread.join();
 }

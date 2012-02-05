@@ -8,6 +8,7 @@
 #include <iostream>
 #include <exception>
 #include <unistd.h>
+#include <boost/bind.hpp>
 
 #include "MyExceptions.hpp"
 #include "Engine.h"
@@ -117,14 +118,13 @@ int main(int argc, char **argv)
 
     Engine engine;
     ConsoleInterface interface(engine, config);
-    ProgressMonitor::progressFunciton_t statusFunction; //TODO: there is the place where i want to push pointer to method forward
-    ProgressMonitor progress(statusFunction, std::cout, 1);
+    ProgressMonitor progress(engine, std::cout, 1);
 
     try
     {
         interface.getListOfFiles();
 
-        interface.start(done);
+        interface.start();
         progress.start();
 
         interface.join();
